@@ -17,13 +17,18 @@ def skSemSoma(notas, peso):
         resultados.append(resultado)
         cont += 1
 
+    resultados = np.array(resultados)
 
-    #resultados = np.array(resultados)
-
-    for result in resultados:
-        print(result)
+    return resultados
 
 
+def Sk(notas):
+    return np.sum(notas)
+
+def Rk(notas):
+    return np.max(notas)
+
+#def Qk()
 
 
 if __name__ == "__main__":
@@ -31,8 +36,10 @@ if __name__ == "__main__":
     nAlternativas = int(input("Digite o número de alternativas:"))
     contAlt = 0
     contCrit =0
-
+    retSkSemSoma = []
+    notasSk = []
     criterios = []
+    retSk = []
 
 
     for criterio in range(nCriterios):
@@ -51,8 +58,29 @@ if __name__ == "__main__":
 
     criterios = np.array(criterios)
 
+
+
     for c in criterios:
-        skSemSoma(c.valores, c.peso)
+        ret = skSemSoma(c.valores, c.peso)
+        retSkSemSoma.append(ret)
+
+    retSkSemSoma = np.array(retSkSemSoma)
+
+    for i in range(nAlternativas):
+        alt = []
+        for j in range(nCriterios):
+            alt.append(retSkSemSoma[j][i])
+        notasSk.append(alt)
+
+    notasSk = np.array(notasSk)
+
+    for n in notasSk:
+        ret = round(Sk(notasSk),2)
+        retSk.append(ret)
+
+    retSk = np.array(retSk)
+    print(retSk)
+    #retRk = Rk(notasSk)
 
 
 
