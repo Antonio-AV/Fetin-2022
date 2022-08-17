@@ -37,9 +37,10 @@ if __name__ == "__main__":
     contAlt = 0
     contCrit =0
     retSkSemSoma = []
-    notasSk = []
+    notasSkRk = []
     criterios = []
     retSk = []
+    retRk = []
 
 
     for criterio in range(nCriterios):
@@ -59,28 +60,45 @@ if __name__ == "__main__":
     criterios = np.array(criterios)
 
 
-
+# Trabalhando com a função SkSemSoma
     for c in criterios:
         ret = skSemSoma(c.valores, c.peso)
         retSkSemSoma.append(ret)
 
     retSkSemSoma = np.array(retSkSemSoma)
 
+
+# Trabalhando com a função Sk
     for i in range(nAlternativas):
         alt = []
         for j in range(nCriterios):
             alt.append(retSkSemSoma[j][i])
-        notasSk.append(alt)
+        notasSkRk.append(alt)
 
-    notasSk = np.array(notasSk)
+    notasSkRk = np.array(notasSkRk)
 
-    for n in notasSk:
-        ret = round(Sk(notasSk),2)
+    for n in notasSkRk:
+        ret = round(Sk(n),2)
         retSk.append(ret)
 
     retSk = np.array(retSk)
-    print(retSk)
-    #retRk = Rk(notasSk)
+
+# Trabalhando com a função Rk
+    for n in notasSkRk:
+        retu = Rk(n)
+        retRk.append(retu)
+
+    retRk = np.array(retRk)
+
+    sMais = np.min(retSk)
+    sMenos = np.max(retSk)
+
+    rMais = np.min(retRk)
+    rMenos = np.max(retRk)
+
+    v = 0.5
+
+
 
 
 
