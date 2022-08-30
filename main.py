@@ -28,7 +28,21 @@ def Sk(notas):
 def Rk(notas):
     return np.max(notas)
 
-#def Qk()
+def Qk(v, sk, rk):
+    sMais = np.min(sk)
+    sMenos = np.max(sk)
+
+    rMais = np.min(rk)
+    rMenos = np.max(rk)
+
+    qk = []
+
+    for i in range (len(sk)):
+        aux = (v*(sk[i]-sMais)/(sMenos-sMais))+((1-v)*(rk[i]-rMais)/(rMenos-rMais))
+        qk.append(aux)
+
+    qk = np.array(qk)
+    return qk
 
 
 if __name__ == "__main__":
@@ -41,6 +55,8 @@ if __name__ == "__main__":
     criterios = []
     retSk = []
     retRk = []
+    retQk = []
+    v = 0.5
 
 
     for criterio in range(nCriterios):
@@ -90,13 +106,20 @@ if __name__ == "__main__":
 
     retRk = np.array(retRk)
 
-    sMais = np.min(retSk)
-    sMenos = np.max(retSk)
+# Trabalhando com a função Qk
+    notasQk = Qk(v, retSk, retRk)
 
-    rMais = np.min(retRk)
-    rMenos = np.max(retRk)
+    for i in notasQk:
+        ret = round(i,6)
+        retQk.append(ret)
 
-    v = 0.5
+    retQk = np.array(retQk)
+
+    print(retQk)
+
+
+
+
 
 
 
