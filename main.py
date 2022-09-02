@@ -114,8 +114,9 @@ if __name__ == "__main__":
         retQk.append(ret)
 
     retQk = np.array(retQk)
+    sortedQk = np.sort(retQk)
 
-    print(retQk)
+    print(sortedQk)
 
 
 
