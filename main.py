@@ -12,6 +12,9 @@ def skSemSoma(notas, peso):
     menor = np.min(notas)
     cont = 0
 
+    if(maior == menor):
+        maior += 0.1
+
     resultados = []
     for nota in range(notas.size):
         resultado = round(peso * (abs(maior-notas[cont])/abs(maior-menor)),2)
@@ -138,9 +141,13 @@ if __name__ == "__main__":
         array.append(opcoes[i])
         array.append(retQk[i])
 
+
+
     array = np.array(array).reshape(nAlternativas,2)
     df = pd.DataFrame(array, columns=['Opções', 'Qk'])
     df.to_excel('resultados.xlsx', index=False)
+
+    print("Planilha gerada com Sucesso!!!!!!")
 
 
 
