@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 class Criterio:
     def __init__(self, nome, peso, valores):
@@ -46,10 +47,11 @@ def Qk(v, sk, rk):
 
 
 if __name__ == "__main__":
-    nCriterios = int(input("Digite quantos criterios serão usados:"))
-    nAlternativas = int(input("Digite o número de alternativas:"))
-    contAlt = 0
-    contCrit =0
+    tabela = pd.read_excel("Teste Fetin.xlsx")
+    nCriterios = tabela.shape[0]
+    nAlternativas = tabela.shape[1] - 2
+    notasAlternativas = []
+    notasCriterios = []
     retSkSemSoma = []
     notasSkRk = []
     criterios = []
@@ -58,20 +60,27 @@ if __name__ == "__main__":
     retQk = []
     v = 0.5
 
+    nomes = tabela["Critérios"]
+    pesos = tabela["Pesos"]
 
-    for criterio in range(nCriterios):
-        nome = input("Digite o nome do critério:")
-        peso = float(input("Digite o peso do critério:"))
-        alternativas = []
-        for alternativa in range(nAlternativas):
-            print("Digite a nota da alternativa ", contAlt+1, ":")
-            valor = float(input())
-            alternativas.append(valor)
-            criterio_aux = Criterio(nome, peso, alternativas)
-            contAlt += 1
+    #Separando as notas por alternativa
+    for i in range(nAlternativas):
+        notasAlternativas.append(tabela.iloc[:, i+2])
+
+    #Separando as notas por critério
+    for i in range(nCriterios):
+        crit = []
+        for j in range(nAlternativas):
+            crit.append(notasAlternativas[j][i])
+        notasCriterios.append(crit)
+
+#Preenchendo o  array de critérios
+    for i in range(nCriterios):
+        nome = nomes[i]
+        peso = pesos[i]
+        valores = notasCriterios[i]
+        criterio_aux = Criterio(nome, peso, valores)
         criterios.append(criterio_aux)
-        contCrit += 1
-        contAlt = 0
 
     criterios = np.array(criterios)
 
@@ -114,10 +123,24 @@ if __name__ == "__main__":
         retQk.append(ret)
 
     retQk = np.array(retQk)
-    sortedQk = np.sort(retQk)
 
-    print(sortedQk)
 
+#Pegando o nome de cada uma das opções
+    cabecalho = tabela.head(0).columns
+    opcoes = []
+    for i in range(2, tabela.shape[1]):
+        opcoes.append(cabecalho[i])
+    opcoes = np.array(opcoes)
+
+#Criando o dataframe final
+    array = []
+    for i in range(opcoes.size):
+        array.append(opcoes[i])
+        array.append(retQk[i])
+
+    array = np.array(array).reshape(nAlternativas,2)
+    df = pd.DataFrame(array, columns=['Opções', 'Qk'])
+    df.to_excel('resultados.xlsx', index=False)
 
 
 
